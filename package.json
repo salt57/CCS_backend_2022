@@ -1,0 +1,24 @@
+{
+  "name": "ccs_backend_2022",
+  "version": "1.0.0",
+  "description": "[![csivit][csivitu-shield]][csivitu-url] [![Issues][issues-shield]][issues-url]",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/salt57/CCS_backend_2022.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/salt57/CCS_backend_2022/issues"
+  },
+  "homepage": "https://github.com/salt57/CCS_backend_2022#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2"
+  }
+}
