@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
+require("dotenv/config");
 require('./models/dbInit');
 
 app.use(cors())
@@ -12,9 +13,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // const authMiddleware = require('./middleware/authorize')
 
-// const testRoute = require('./routes/test')
+const testRoute = require('./routes/test')
 
-// app.use('/test', testRoute);
+app.use('/test', testRoute);
 
 
 app.use((error, req, res, next) => {
