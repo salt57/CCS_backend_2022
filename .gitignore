@@ -1,2 +1,6 @@
 .env
 node_modules/
+logs/combined.log
+logs/error.log
+logs/combinedtracker.log
+logs/errortracker.log
