@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
-// require('./models/dbInit');
+require('./models/dbInit');
 
 app.use(cors())
 
