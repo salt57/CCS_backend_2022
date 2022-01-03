@@ -5,8 +5,18 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    role: { type: String, enum: ['admin', 'guest'] }
   },
+  role: {
+    type: String,
+    enum: ["admin", "guest"],
+  },
+  domainsAttempted: [
+    {
+      type: String,
+      enum: ["Tech", "Design", "Management"],
+    },
+  ],
+  
 });
 const User = mongoose.model('user', UserSchema);
 module.exports = User;
