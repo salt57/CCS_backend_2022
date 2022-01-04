@@ -2,6 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 const question = require("../models/Question");
+const user = require("../models/User");
 const { authUserSchema } = require("../utils/validation_schema");
 const validator = require("express-joi-validation").createValidator({});
 const { logger } = require("../logs/logger");
@@ -11,16 +12,37 @@ require("dotenv").config();
 
 router.post("/", validator.body(authUserSchema), async (req, res) => {
     try{
-        const { username } = req.participant;
+        // const { username } = req.participant;
+        const { username } = req.body;
         const { quesId } = req.body;
         const { answer } = req.body; 
-        const { domain } = req.body;
 
+
+        if (quesId>=1 && quesId<=10){
+            domainsAttempted = "Tech";
+        }else if (
+          quesId >= (10+1) &&
+          quesId <= (10*2)
+        ) {
+          domainsAttempted = "Design";
+        }else if (
+          quesId >= ((2*10)+1) &&
+          quesId <= (10*3)
+        ) {
+          domainsAttempted = "Management";
+        }
         
-
+        var new_user = new user({
+          username,
+          quesId,
+          answer,
+          domainsAttempted,
+        });
+        console.log(new_user)
+        new_user.save()
 
     } catch (e) {
-    logger.error(error_codes.E0, playerInfo);
+    logger.error(error_codes.E0);
     return res.status(500).json({
       code: "E0",
       error: e,

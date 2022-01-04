@@ -17,7 +17,7 @@ const testRoute = require('./routes/test')
 const submitRoute = require('./routes/submit')
 
 app.use('/test', testRoute);
-app.use('/submit', authMiddleware, submitRoute);
+app.use('/submit', submitRoute);
 
 
 app.use((error, req, res, next) => {

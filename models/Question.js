@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const QuestionSchema = new mongoose.Schema({
+  quesId: {
+    type: Number,
+    required: true
+  },
   question: {
     text: {
       type: String,
@@ -16,11 +20,11 @@ const QuestionSchema = new mongoose.Schema({
         type: String,
       },
     ],
-    difficulty: {
-      type: String,
-      enum: ["Easy", "Medium", "Hard"],
-      required: true,
-    },
+  },
+  difficulty: {
+    type: String,
+    enum: ["Easy", "Medium", "Hard"],
+    required: true,
   },
   domain: {
     type: String,
