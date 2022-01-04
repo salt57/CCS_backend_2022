@@ -6,10 +6,6 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  // role: {
-  //   type: String,
-  //   enum: ["admin", "guest"],
-  // },
   domainsAttempted: [
     {
       type: String,
@@ -18,9 +14,28 @@ const UserSchema = new mongoose.Schema({
   ],
   answer: {
     type: String,
-    required: true
-  }
-  
+    // required: true
+  },
+  questionLoaded: [
+    {
+      type: Number,
+      // required: true,
+      // unique: true,
+    },
+  ],
+  questionAttempted: 
+  [
+    {
+      quesId: {
+        type: Number,
+        // required: true,
+      },
+      answer: {
+        type: String,
+        // required: true,
+      },
+    },
+  ],
 });
 const User = mongoose.model('user', UserSchema);
 module.exports = User;

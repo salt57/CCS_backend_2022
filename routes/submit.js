@@ -32,18 +32,22 @@ router.post("/", validator.body(authUserSchema), async (req, res) => {
           domainsAttempted = "Management";
         }
         
-        var new_user = new user({
-            username,
-            quesId,
-            answer,
-            domainsAttempted,
-        });
-        console.log(new_user)
-        new_user.save()
+        const userInfo = await user.findOne({ username: username });
+        console.log(userInfo)
+        userInfo.quesId = quesId
+        userInfo.answer = answer
+        userInfo.domainsAttempted.push(domainsAttempted)
+        userInfo.questionAnswered.push(quesId);
+
+        userInfo.save()
+
+
+        //Logging
         const info = {
             username,
             quesId,
-            domainsAttempted
+            domainsAttempted,
+            questionAnswered: quesId
         };
         logger.error(logical_errors.L7, info);
             return res.json({
