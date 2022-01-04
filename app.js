@@ -15,19 +15,28 @@ app.use(express.urlencoded({ extended: false }));
 
 const authMiddleware = require('./middleware/authorize')
 const testRoute = require('./routes/test')
-// const submitRoute = require('./routes/submit')
-// const autosaveRoute = require('./routes/autosave')
-const createUserRoute = require('./routes/createUser')
+const submitRoute = require('./routes/submit')
+const autosaveRoute = require('./routes/autosave')
+// const createUserRoute = require('./routes/createUser')
 
 const apiLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 15 minutes
+  windowMs: 1 * 60 * 1000, // 1 minutes
   max: 10,
 });
 
-app.use('/test', testRoute);
-// app.use('/submit', submitRoute);
-// app.use('/autosave',apiLimiter, autosaveRoute);
-app.use('/createUser',apiLimiter, createUserRoute);
+// app.use('/test', testRoute);
+app.use('/submit', submitRoute);
+app.use('/autosave',apiLimiter, autosaveRoute);
+// app.use('/createUser',apiLimiter, createUserRoute);
+
+// const User = require('./models/User')
+// const user = new User({
+//   username: "stupidbidhi",
+//   domainsAttempted: [],
+//   questionLoaded: [],
+//   questionAttempted: []
+// })
+// user.save()
 
 
 app.use((error, req, res, next) => {

@@ -12,10 +12,6 @@ const UserSchema = new mongoose.Schema({
       enum: ["Tech", "Design", "Management"],
     },
   ],
-  answer: {
-    type: String,
-    // required: true
-  },
   questionLoaded: [
     {
       type: Number,

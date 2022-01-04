@@ -14,30 +14,28 @@ router.post("/", validator.body(authUserSchema), async (req, res) => {
     try{
         // const { username } = req.participant;
         const { username } = req.body;
-        const { quesId } = req.body;
-        const { answer } = req.body; 
+        const { ques } = req.body;
 
 
-        if (quesId>=1 && quesId<=10){
+        if (ques.quesId>=1 && ques.quesId<=10){
             domainsAttempted = "Tech";
         }else if (
-          quesId >= (10+1) &&
-          quesId <= (10*2)
+          ques.quesId >= (10+1) &&
+          ques.quesId <= (10*2)
         ) {
           domainsAttempted = "Design";
         }else if (
-          quesId >= ((2*10)+1) &&
-          quesId <= (10*3)
+          ques.quesId >= ((2*10)+1) &&
+          ques.quesId <= (10*3)
         ) {
           domainsAttempted = "Management";
         }
         
         const userInfo = await user.findOne({ username: username });
         console.log(userInfo)
-        userInfo.quesId = quesId
-        userInfo.answer = answer
-        userInfo.domainsAttempted.push(domainsAttempted)
-        userInfo.questionAnswered.push(quesId);
+        // userInfo.ques.quesId = ques.quesId
+        // userInfo.domainsAttempted.push(domainsAttempted)
+        userInfo.questionAttempted.push(ques);
 
         userInfo.save()
 
@@ -45,9 +43,8 @@ router.post("/", validator.body(authUserSchema), async (req, res) => {
         //Logging
         const info = {
             username,
-            quesId,
+            quesId: ques.quesId,
             domainsAttempted,
-            questionAnswered: quesId
         };
         logger.error(logical_errors.L7, info);
             return res.json({
