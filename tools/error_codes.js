@@ -4,5 +4,7 @@ const error_codes = {
   E2: "token validation failed",
   E3: "values not found in database",
 };
-
-module.exports = { error_codes};
+const logical_errors = {
+  L7: "Question attempted"
+}
+module.exports = { error_codes, logical_errors };

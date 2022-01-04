@@ -7,7 +7,7 @@ const { authUserSchema } = require("../utils/validation_schema");
 const validator = require("express-joi-validation").createValidator({});
 const { logger } = require("../logs/logger");
 const { loggertracker } = require("../logs/tracker");
-const { error_codes } = require("../tools/error_codes");
+const { error_codes, logical_errors } = require("../tools/error_codes");
 require("dotenv").config();
 
 router.post("/", validator.body(authUserSchema), async (req, res) => {
@@ -33,13 +33,22 @@ router.post("/", validator.body(authUserSchema), async (req, res) => {
         }
         
         var new_user = new user({
-          username,
-          quesId,
-          answer,
-          domainsAttempted,
+            username,
+            quesId,
+            answer,
+            domainsAttempted,
         });
         console.log(new_user)
         new_user.save()
+        const info = {
+            username,
+            quesId,
+            domainsAttempted
+        };
+        logger.error(logical_errors.L7, info);
+            return res.json({
+                code: "L7",
+        });
 
     } catch (e) {
     logger.error(error_codes.E0);
