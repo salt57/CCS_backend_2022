@@ -17,6 +17,7 @@ const authMiddleware = require('./middleware/authorize')
 const testRoute = require('./routes/test')
 const submitRoute = require('./routes/submit')
 const autosaveRoute = require('./routes/autosave')
+const questionRoute = require('./routes/questions')
 // const createUserRoute = require('./routes/createUser')
 
 const apiLimiter = rateLimit({
@@ -27,6 +28,7 @@ const apiLimiter = rateLimit({
 // app.use('/test', testRoute);
 app.use('/submit', submitRoute);
 app.use('/autosave',apiLimiter, autosaveRoute);
+app.use('/question',apiLimiter, questionRoute);
 // app.use('/createUser',apiLimiter, createUserRoute);
 
 // const User = require('./models/User')
@@ -37,6 +39,15 @@ app.use('/autosave',apiLimiter, autosaveRoute);
 //   questionAttempted: []
 // })
 // user.save()
+
+// const Question = require('./models/Question')
+// const question = new Question({
+//   quesId: 3,
+//   question: { text: "hihihihi", img: [], links: [] },
+//   domain: "Tech",
+//   difficulty: "Easy",
+// });
+// question.save()
 
 
 app.use((error, req, res, next) => {
