@@ -30,14 +30,21 @@ router.get("/", async (req, res) => {
     }
 
     const userInfo = await user.findOne({ username: candidate });
-    console.log(userInfo);
+    // console.log(userInfo);
+
+    const questions = userInfo.questionAttempted.map(ques => ques.quesId);
+    const quesInfo = await question.find({ quesId: { $in: questions}});
+    // console.log(questions)
+    // console.log(quesInfo)
     // userInfo.ques.quesId = ques.quesId
     // userInfo.domainsAttempted.push(domainsAttempted)
-    logger.info(success_codes.S1, {candidate: userInfo.username})
+    logger.info(success_codes.S1, {candidate: userInfo.username, quesIds: questions})
     return res.json({
       code: "S1",
-      candidateInfo: userInfo
+      candidateInfo: userInfo,
+      questions: quesInfo
     })
+
   } catch (e) {
     logger.error(error_codes.E0);
     return res.status(500).json({
