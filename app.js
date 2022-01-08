@@ -17,6 +17,7 @@ const authMiddleware = require('./middleware/authorize')
 const testRoute = require('./routes/test')
 const submitRoute = require('./routes/submit')
 const autosaveRoute = require('./routes/autosave')
+const adminRoute = require('./admin/admin')
 // const createUserRoute = require('./routes/createUser')
 
 const apiLimiter = rateLimit({
@@ -25,18 +26,16 @@ const apiLimiter = rateLimit({
 });
 
 // app.use('/test', testRoute);
+app.use('/admin', adminRoute);
 app.use('/submit', submitRoute);
 app.use('/autosave',apiLimiter, autosaveRoute);
 // app.use('/createUser',apiLimiter, createUserRoute);
 
-// const User = require('./models/User')
-// const user = new User({
-//   username: "stupidbidhi",
-//   domainsAttempted: [],
-//   questionLoaded: [],
-//   questionAttempted: []
+// const Admin = require('./models/Admin')
+// const admin = new Admin({
+//   username: "stupidbidhi"
 // })
-// user.save()
+// admin.save()
 
 
 app.use((error, req, res, next) => {

@@ -5,6 +5,11 @@ const error_codes = {
   E3: "values not found in database",
 };
 const logical_errors = {
-  L7: "Question attempted"
+  L7: "Question attempted",
+  L1: "User is not admin"
+};
+
+const success_codes = {
+  S1: "successfully fetched candidate"
 }
-module.exports = { error_codes, logical_errors };
+module.exports = { error_codes, logical_errors, success_codes };
