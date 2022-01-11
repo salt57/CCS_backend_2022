@@ -7,48 +7,57 @@ const { authUserSchema } = require("../utils/validation_schema");
 const validator = require("express-joi-validation").createValidator({});
 const { logger } = require("../logs/logger");
 const { loggertracker } = require("../logs/tracker");
-const { error_codes, logical_errors } = require("../tools/error_codes");
+const { error_codes, logical_errors, success_codes } = require("../tools/error_codes");
 require("dotenv").config();
 
 router.post("/", async (req, res) => {
   try {
     // const { username } = req.participant;
     const { username } = req.body;
-    const { domain } = req.body;
-    const { difficulty } = req.body;
+    // const { domain } = req.body;
+    // const { difficulty } = req.body;
 
-    const questionInfo = await question.find({
-      difficulty: difficulty,
-      domain: domain,
-    });
+    const questionInfo = await question.find({ });
 
     const userInfo = await user.findOne({ username: username });
 
 
     // console.log(typeof questionInfo.length)
-    console.log(questionInfo[0].quesId)
+    // console.log(questionInfo)
 
-    var arr = []
-    for (let i = 0; i < questionInfo.length; i++) {
-        arr.push(questionInfo[i].quesId);
-    }
-    var myArray = arr.filter((n) => !userInfo.questionLoaded.includes(n));
-    console.log(myArray);
-
+    // var arr = []
+    // console.log(questionInfo.length)
+    // for (let i = 0; i < questionInfo.length; i++) {
+    //     arr.push(questionInfo[i].quesId);
+    // }
     // console.log(arr)
-    var item = questionInfo[Math.floor(Math.random() * myArray.length)];
-    console.log(item)
-    
-    const info = {
-      username,
-      domain,
-      difficulty,
-    };
-    logger.error(logical_errors.L7, info);
-    return res.json({
-      code: "L7",
-      question: item
-    });
+    // var myArray = arr.filter((n) => !userInfo.questionAttempted.map(ques => ques.quesId).includes(n));
+    // console.log(myArray);
+
+    // console.log(myArray[Math.floor(Math.random() * myArray.length)])
+    // var item = questionInfo[myArray[Math.floor(Math.random() * myArray.length)]];
+    // console.log(attempted)
+    // const possibleQuestions = questionInfo.filter((n) => !userInfo.questionLoaded.includes(n.quesId));
+    // if (possibleQuestions.length == 0) {
+    //   logger.warn(logical_errors.L2, {username: username});
+    //   return res.json({
+    //     code: "L2"
+    //   });
+    // }
+    // const requiredQues = possibleQuestions[Math.floor(Math.random() * possibleQuestions.length)]
+
+    // userInfo.questionLoaded.push(requiredQues.quesId)
+    // userInfo.save()
+
+    // const info = {
+    //   username,
+    //   quesId: requiredQues.quesId
+    // };
+    // logger.info(success_codes.S2, info);
+    // return res.json({
+    //   code: "S2",
+    //   question: requiredQues
+    // });
   } catch (e) {
     logger.error(error_codes.E0);
     return res.status(500).json({

@@ -12,13 +12,13 @@ const UserSchema = new mongoose.Schema({
       enum: ["Tech", "Design", "Management"],
     },
   ],
-  questionLoaded: [
-    {
-      type: Number,
-      // required: true,
-      // unique: true,
-    },
-  ],
+  // questionLoaded: [
+  //   {
+  //     type: Number,
+  //     // required: true,
+  //     // unique: true,
+  //   },
+  // ],
   questionAttempted: 
   [
     {
