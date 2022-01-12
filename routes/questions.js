@@ -3,61 +3,70 @@ const express = require("express");
 const router = express.Router();
 const question = require("../models/Question");
 const user = require("../models/User");
-const { authUserSchema } = require("../utils/validation_schema");
+const { startSchema } = require("../utils/validation_schema");
 const validator = require("express-joi-validation").createValidator({});
 const { logger } = require("../logs/logger");
+const { loggerStartEnd } = require("../logs/startend");
 // const { loggertracker } = require("../logs/tracker");
 const { error_codes, logical_errors, success_codes } = require("../tools/error_codes");
 require("dotenv").config();
 
-router.post("/", async (req, res) => {
+router.post("/",validator.body(startSchema), async (req, res) => {
   try {
     // const { username } = req.participant;
     const { username } = req.body;
-    // const { domain } = req.body;
-    // const { difficulty } = req.body;
-
-    const questionInfo = await question.find({ });
-
+    const { domain } = req.body;
     const userInfo = await user.findOne({ username: username });
+    if(new Date() < userInfo.endTime)
+    {
 
+      const easyquestions = await question.find({
+        domain: domain,
+        difficulty: "Easy",
+      }); 
+      
+      const mediumquestions = await question.find({
+        domain: domain,
+        difficulty: "Medium",
+      }); 
 
-    // console.log(typeof questionInfo.length)
-    // console.log(questionInfo)
+      const hardquestions = await question.find({
+        domain: domain,
+        difficulty: "Hard",
+      }); 
+      
+      
+      const easyshuffled = easyquestions.sort(() => 0.5 - Math.random());
+      var selected = easyshuffled.slice(0, 2); 
 
-    // var arr = []
-    // console.log(questionInfo.length)
-    // for (let i = 0; i < questionInfo.length; i++) {
-    //     arr.push(questionInfo[i].quesId);
-    // }
-    // console.log(arr)
-    // var myArray = arr.filter((n) => !userInfo.questionAttempted.map(ques => ques.quesId).includes(n));
-    // console.log(myArray);
+      const mediumshuffled = mediumquestions.sort(() => 0.5 - Math.random());
+      let mediumselected = mediumshuffled.slice(0, 2);
 
-    // console.log(myArray[Math.floor(Math.random() * myArray.length)])
-    // var item = questionInfo[myArray[Math.floor(Math.random() * myArray.length)]];
-    // console.log(attempted)
-    // const possibleQuestions = questionInfo.filter((n) => !userInfo.questionLoaded.includes(n.quesId));
-    // if (possibleQuestions.length == 0) {
-    //   logger.warn(logical_errors.L2, {username: username});
-    //   return res.json({
-    //     code: "L2"
-    //   });
-    // }
-    // const requiredQues = possibleQuestions[Math.floor(Math.random() * possibleQuestions.length)]
+      const hardshuffled = hardquestions.sort(() => 0.5 - Math.random());
+    let hardselected = hardshuffled.slice(0, 2);
 
-    // userInfo.questionLoaded.push(requiredQues.quesId)
-    // userInfo.save()
+    selected = selected.concat(hardselected)
+    selected = selected.concat(mediumselected)
+    
+    var final =[]
+    for (let i = 0; i < selected.length; i++) {
+      var obj = {}
+      obj["quesId"] = selected[i].quesId
+      obj["question"] = selected[i].question
+      final.push(obj);
+    }
 
-    // const info = {
-    //   username,
-    //   quesId: requiredQues.quesId
-    // };
-    // logger.info(success_codes.S2, info);
-    // return res.json({
-    //   code: "S2",
-    //   question: requiredQues
-    // });
+    logger.info(success_codes.S2, final);
+    return res.json({
+      code: "S2",
+      question: final
+    });
+  }else{
+    loggerStartEnd.warn(logical_codes.L4, { username: username });
+    return res.json({
+      code: "L4",
+    });
+  }
   } catch (e) {
     logger.error(error_codes.E0);
     return res.status(500).json({

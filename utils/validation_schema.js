@@ -9,8 +9,12 @@ const authUserSchema = Joi.object().keys({
   }))
   .required(),
   finalSubmit: Joi.boolean(),
-  // answer: Joi.string().min(1).max(200).required(),
   domain: Joi.string().valid("Tech", "Design", "Management").required(),
 });
 
-module.exports = { authUserSchema }
+const startSchema = Joi.object().keys({
+  username: Joi.string().required(),
+  domain: Joi.string().valid("Tech", "Design", "Management").required(),
+});
+
+module.exports = { authUserSchema, startSchema }

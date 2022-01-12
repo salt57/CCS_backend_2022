@@ -43,12 +43,26 @@ app.use('/start',apiLimiter, startRoute);
 
 // const Question = require('./models/Question')
 // const question = new Question({
-//   quesId: 3,
+//   quesId: 8,
 //   question: { text: "hihihihi", img: [], links: [] },
 //   domain: "Tech",
-//   difficulty: "Easy",
+//   difficulty: "Hard",
+// });
+// const question1 = new Question({
+//   quesId: 9,
+//   question: { text: "hihihihi", img: [], links: [] },
+//   domain: "Tech",
+//   difficulty: "Hard",
+// });
+// const question2 = new Question({
+//   quesId: 7,
+//   question: { text: "hihihihi", img: [], links: [] },
+//   domain: "Tech",
+//   difficulty: "Hard",
 // });
 // question.save()
+// question1.save()
+// question2.save()
 
 
 app.use((error, req, res, next) => {
