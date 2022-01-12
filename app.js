@@ -14,9 +14,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const authMiddleware = require('./middleware/authorize')
-const testRoute = require('./routes/test')
+// const testRoute = require('./routes/test')
 const submitRoute = require('./routes/submit')
-const autosaveRoute = require('./routes/autosave')
+// const autosaveRoute = require('./routes/autosave')
 const questionRoute = require('./routes/questions')
 const adminRoute = require('./admin/admin')
 const startRoute = require('./routes/start')
@@ -30,7 +30,7 @@ const apiLimiter = rateLimit({
 // app.use('/test', testRoute);
 app.use('/admin', adminRoute);
 app.use('/submit', submitRoute);
-app.use('/autosave',apiLimiter, autosaveRoute);
+// app.use('/autosave',apiLimiter, autosaveRoute);
 app.use('/question',apiLimiter, questionRoute);
 app.use('/start',apiLimiter, startRoute);
 // app.use('/createUser',apiLimiter, createUserRoute);

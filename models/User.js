@@ -12,7 +12,33 @@ const UserSchema = new mongoose.Schema({
       enum: ["Tech", "Design", "Management"],
     },
   ],
-  questionAttempted: 
+  techAttempted: 
+  [
+    {
+      quesId: {
+        type: Number,
+        // required: true,
+      },
+      answer: {
+        type: String,
+        // required: true,
+      },
+    },
+  ],
+  managementAttempted: 
+  [
+    {
+      quesId: {
+        type: Number,
+        // required: true,
+      },
+      answer: {
+        type: String,
+        // required: true,
+      },
+    },
+  ],
+  designAttempted: 
   [
     {
       quesId: {

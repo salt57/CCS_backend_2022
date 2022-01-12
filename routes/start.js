@@ -6,8 +6,8 @@ const user = require("../models/User");
 const { authUserSchema } = require("../utils/validation_schema");
 const validator = require("express-joi-validation").createValidator({});
 const { logger } = require("../logs/logger");
-const { loggertracker } = require("../logs/tracker");
-const { error_codes, logical_errors } = require("../tools/error_codes");
+// const { loggertracker } = require("../logs/tracker");
+const { error_codes, logical_errors, success_codes } = require("../tools/error_codes");
 const moment = require("moment")
 require("dotenv").config();
 
@@ -23,16 +23,18 @@ router.post("/", async (req, res) => {
   if(!userInfo){
     const new_user = new user({
         username,
-        domainsAttempted: [],
-        questionAttempted: [],
+        domainsAttempted: [domain],
+        techAttempted: [],
+        managementAttempted: [],
+        designAttempted: [],
         startTime: start,
         endTime: end,
     });
         new_user.save();
     }else{
         if(userInfo.domainsAttempted.includes(domain)){
-            console.log("in")
-            logger.error(logical_errors.L2, {username: username});
+            // console.log("in")
+            logger.warn(logical_errors.L2, {username: username});
             return res.json({
                code: "L2",
             });
@@ -41,8 +43,12 @@ router.post("/", async (req, res) => {
         userInfo.startTime = start
         userInfo.endTime = end
         userInfo.save()
-        
     }
+
+    logger.info(success_codes.S4, { username: username })
+    return res.json({
+        code: "S4",
+    })
 })
 
 module.exports = router;

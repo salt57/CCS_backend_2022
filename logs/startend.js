@@ -11,7 +11,7 @@ const loggertracker = winston.createLogger({
 
   transports: [
     new winston.transports.File({
-      filename: "logs/errortracker.log",
+      filename: "logs/errorStartEnd.log",
       level: "error",
       format: winston.format.combine(
         winston.format.timestamp({
@@ -24,7 +24,7 @@ const loggertracker = winston.createLogger({
       ),
     }),
     new winston.transports.File({
-      filename: "logs/combinedtracker.log",
+      filename: "logs/combinedStartEnd.log",
       level: "info",
       format: winston.format.combine(
         winston.format.timestamp({

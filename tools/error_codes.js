@@ -6,11 +6,16 @@ const error_codes = {
 };
 const logical_errors = {
   L1: "User is not admin",
-  L2: "Domain already attempted"
+  L2: "Domain already attempted",
+  L3: "Time over",
+  L4: "Test not started or already submitted",
+  L5: "No such user present"
 };
 
 const success_codes = {
   S1: "successfully fetched candidate",
-  S2: "successfully sent back questions"
+  S2: "successfully sent back questions",
+  S3: "saved answers successfully",
+  S4: "started test successfully"
 }
 module.exports = { error_codes, logical_errors, success_codes };

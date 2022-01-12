@@ -2,5 +2,5 @@
 node_modules/
 logs/combined.log
 logs/error.log
-logs/combinedtracker.log
-logs/errortracker.log
+logs/combinedStartEnd.log
+logs/errorStartEnd.log

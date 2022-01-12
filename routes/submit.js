@@ -1,57 +1,73 @@
 const express = require("express");
-
+// var moment = require('moment'); // require
+// moment().format();
 const router = express.Router();
 const question = require("../models/Question");
 const user = require("../models/User");
 const { authUserSchema } = require("../utils/validation_schema");
 const validator = require("express-joi-validation").createValidator({});
 const { logger } = require("../logs/logger");
-const { loggertracker } = require("../logs/tracker");
-const { error_codes, logical_errors } = require("../tools/error_codes");
+const { loggerStartEnd } = require("../logs/startend");
+const { error_codes, logical_errors, success_codes } = require("../tools/error_codes");
 require("dotenv").config();
 
 router.post("/", validator.body(authUserSchema), async (req, res) => {
-    try{
-        // const { username } = req.participant;
-        const { username } = req.body;
-        const { ques } = req.body;
+  try {
+    // const { username } = req.participant;
+    const { username } = req.body;
+    const { questions } = req.body;
+    const { domain } = req.body;
+    const { finalSubmit } = req.body;
 
+    const userInfo = await user.findOne({ username: username });
+    // console.log(userInfo);
 
-        if (ques.quesId>=1 && ques.quesId<=10){
-            domainsAttempted = "Tech";
-        }else if (
-          ques.quesId >= (10+1) &&
-          ques.quesId <= (10*2)
-        ) {
-          domainsAttempted = "Design";
-        }else if (
-          ques.quesId >= ((2*10)+1) &&
-          ques.quesId <= (10*3)
-        ) {
-          domainsAttempted = "Management";
-        }
-        
-        const userInfo = await user.findOne({ username: username });
-        console.log(userInfo)
-        // userInfo.ques.quesId = ques.quesId
-        // userInfo.domainsAttempted.push(domainsAttempted)
-        userInfo.questionAttempted.push(ques);
+    if (!userInfo.endTime) {
+      // console.log("test not started or time over");
+      logger.warn(logical_errors.L4, {username: username});
+      return res.json({
+        code:"L4",
+      });
+    } else if (userInfo.endTime < new Date()) {
+      // console.log("time over");
+      userInfo.startTime = null;
+      userInfo.endTime = null;
+      userInfo.save();
+      logger.warn(logical_errors.L3, {username: username});
+      return res.json({
+        code:"L3",
+      });
+    }
 
-        userInfo.save()
+    // userInfo.ques.quesId = ques.quesId
+    // userInfo.domainsAttempted.push(domainsAttempted)
 
+    switch (domain) {
+      case "Tech":
+        userInfo.techAttempted = questions
+        break;
+      case "Management":
+        userInfo.managementAttempted = questions
+        break;
+      case "Design":
+        userInfo.designAttempted = questions
+        break;
+      default:
+        break;
+    }
+    
+    if (finalSubmit) {
+      userInfo.startTime = null;
+      userInfo.endTime = null;
+    }
 
-        //Logging
-        const info = {
-            username,
-            quesId: ques.quesId,
-            domainsAttempted,
-        };
-        logger.error(logical_errors.L7, info);
-            return res.json({
-                code: "L7",
-        });
+    userInfo.save();
 
-    } catch (e) {
+    logger.info(success_codes.S3, {username: username});
+    return res.json({
+      code: "S3",
+    });
+  } catch (e) {
     logger.error(error_codes.E0);
     return res.status(500).json({
       code: "E0",

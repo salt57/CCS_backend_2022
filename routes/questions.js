@@ -6,7 +6,7 @@ const user = require("../models/User");
 const { authUserSchema } = require("../utils/validation_schema");
 const validator = require("express-joi-validation").createValidator({});
 const { logger } = require("../logs/logger");
-const { loggertracker } = require("../logs/tracker");
+// const { loggertracker } = require("../logs/tracker");
 const { error_codes, logical_errors, success_codes } = require("../tools/error_codes");
 require("dotenv").config();
 
