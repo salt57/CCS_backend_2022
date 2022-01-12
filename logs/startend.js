@@ -1,6 +1,6 @@
 const winston = require("winston");
 
-const loggertracker = winston.createLogger({
+const loggerStartEnd = winston.createLogger({
   level: "info",
   format: winston.format.combine(
     winston.format.simple(),
@@ -40,11 +40,11 @@ const loggertracker = winston.createLogger({
 });
 
 if (process.env.ENVIRONMENT !== "production") {
-  loggertracker.add(
+  loggerStartEnd.add(
     new winston.transports.Console({
       format: winston.format.simple(),
     })
   );
 }
 
-module.exports = { loggertracker };
+module.exports = { loggerStartEnd };

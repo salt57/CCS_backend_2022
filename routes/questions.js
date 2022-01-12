@@ -8,65 +8,91 @@ const validator = require("express-joi-validation").createValidator({});
 const { logger } = require("../logs/logger");
 const { loggerStartEnd } = require("../logs/startend");
 // const { loggertracker } = require("../logs/tracker");
-const { error_codes, logical_errors, success_codes } = require("../tools/error_codes");
+const {
+  error_codes,
+  logical_errors,
+  success_codes,
+} = require("../tools/error_codes");
 require("dotenv").config();
 
-router.post("/",validator.body(startSchema), async (req, res) => {
+router.post("/", validator.body(startSchema), async (req, res) => {
   try {
     // const { username } = req.participant;
     const { username } = req.body;
     const { domain } = req.body;
     const userInfo = await user.findOne({ username: username });
-    if(new Date() < userInfo.endTime)
-    {
+    console.log(userInfo.endTime, new Date())
+    // if (!userInfo.endTime) {
+    //   loggerStartEnd.warn(logical_codes.L4, { username: username });
+    //   return res.json({
+    //     code: "L4",
+    //   });
+    // }
+    // else if (userInfo.endTime < new Date()) {
+    //   loggerStartEnd.warn(logical_codes.L3, { username: username });
+    //   return res.json({
+    //     code: "L3",
+    //   });
+    // }
 
-      const easyquestions = await question.find({
-        domain: domain,
-        difficulty: "Easy",
-      }); 
-      
-      const mediumquestions = await question.find({
-        domain: domain,
-        difficulty: "Medium",
-      }); 
+    if (!userInfo.endTime) {
+      // console.log("test not started or time over");
+      loggerStartEnd.warn(logical_errors.L4, {username: username});
+      return res.json({
+        code:"L4",
+      });
+    } else if (userInfo.endTime < new Date()) {
+      // console.log("time over");
+      userInfo.startTime = null;
+      userInfo.endTime = null;
+      userInfo.save();
+      loggerStartEnd.warn(logical_errors.L3, {username: username});
+      return res.json({
+        code:"L3",
+      });
+    }
+    console.log("hi")
 
-      const hardquestions = await question.find({
-        domain: domain,
-        difficulty: "Hard",
-      }); 
-      
-      
-      const easyshuffled = easyquestions.sort(() => 0.5 - Math.random());
-      var selected = easyshuffled.slice(0, 2); 
+    const easyquestions = await question.find({
+      domain: domain,
+      difficulty: "Easy",
+    });
 
-      const mediumshuffled = mediumquestions.sort(() => 0.5 - Math.random());
-      let mediumselected = mediumshuffled.slice(0, 2);
+    const mediumquestions = await question.find({
+      domain: domain,
+      difficulty: "Medium",
+    });
 
-      const hardshuffled = hardquestions.sort(() => 0.5 - Math.random());
+    const hardquestions = await question.find({
+      domain: domain,
+      difficulty: "Hard",
+    });
+
+    const easyshuffled = easyquestions.sort(() => 0.5 - Math.random());
+    var selected = easyshuffled.slice(0, 2);
+
+    const mediumshuffled = mediumquestions.sort(() => 0.5 - Math.random());
+    let mediumselected = mediumshuffled.slice(0, 2);
+
+    const hardshuffled = hardquestions.sort(() => 0.5 - Math.random());
     let hardselected = hardshuffled.slice(0, 2);
 
-    selected = selected.concat(hardselected)
-    selected = selected.concat(mediumselected)
-    
-    var final =[]
+    selected = selected.concat(hardselected);
+    selected = selected.concat(mediumselected);
+
+    var final = [];
     for (let i = 0; i < selected.length; i++) {
-      var obj = {}
-      obj["quesId"] = selected[i].quesId
-      obj["question"] = selected[i].question
+      var obj = {};
+      obj["quesId"] = selected[i].quesId;
+      obj["question"] = selected[i].question;
       final.push(obj);
     }
 
     logger.info(success_codes.S2, final);
     return res.json({
       code: "S2",
-      question: final
+      question: final,
     });
-  }else{
-    loggerStartEnd.warn(logical_codes.L4, { username: username });
-    return res.json({
-      code: "L4",
-    });
-  }
   } catch (e) {
     logger.error(error_codes.E0);
     return res.status(500).json({
