@@ -19,6 +19,7 @@ const submitRoute = require('./routes/submit')
 const autosaveRoute = require('./routes/autosave')
 const questionRoute = require('./routes/questions')
 const adminRoute = require('./admin/admin')
+const startRoute = require('./routes/start')
 // const createUserRoute = require('./routes/createUser')
 
 const apiLimiter = rateLimit({
@@ -31,6 +32,7 @@ app.use('/admin', adminRoute);
 app.use('/submit', submitRoute);
 app.use('/autosave',apiLimiter, autosaveRoute);
 app.use('/question',apiLimiter, questionRoute);
+app.use('/start',apiLimiter, startRoute);
 // app.use('/createUser',apiLimiter, createUserRoute);
 
 // const Admin = require('./models/Admin')

@@ -12,13 +12,6 @@ const UserSchema = new mongoose.Schema({
       enum: ["Tech", "Design", "Management"],
     },
   ],
-  // questionLoaded: [
-  //   {
-  //     type: Number,
-  //     // required: true,
-  //     // unique: true,
-  //   },
-  // ],
   questionAttempted: 
   [
     {
@@ -32,6 +25,12 @@ const UserSchema = new mongoose.Schema({
       },
     },
   ],
+  startTime: {
+    type: Date,
+  },
+  endTime: {
+    type: Date,
+  }
 });
 const User = mongoose.model('user', UserSchema);
 module.exports = User;

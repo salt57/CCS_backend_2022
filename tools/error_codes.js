@@ -5,7 +5,8 @@ const error_codes = {
   E3: "values not found in database",
 };
 const logical_errors = {
-  L1: "User is not admin"
+  L1: "User is not admin",
+  L2: "Domain already attempted"
 };
 
 const success_codes = {
