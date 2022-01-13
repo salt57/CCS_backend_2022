@@ -22,19 +22,13 @@ router.post("/", validator.body(startSchema), async (req, res) => {
     const { domain } = req.body;
     const userInfo = await user.findOne({ username: username });
     console.log(userInfo.endTime, new Date())
-    // if (!userInfo.endTime) {
-    //   loggerStartEnd.warn(logical_codes.L4, { username: username });
-    //   return res.json({
-    //     code: "L4",
-    //   });
-    // }
-    // else if (userInfo.endTime < new Date()) {
-    //   loggerStartEnd.warn(logical_codes.L3, { username: username });
-    //   return res.json({
-    //     code: "L3",
-    //   });
-    // }
 
+    if (!userInfo.domainsAttempted.includes(domain)){
+      logger.warn(logical_errors.L6, { username: username });
+      return res.json({
+        code: "L6",
+      });
+    }
     if (!userInfo.endTime) {
       // console.log("test not started or time over");
       loggerStartEnd.warn(logical_errors.L4, {username: username});
@@ -51,8 +45,13 @@ router.post("/", validator.body(startSchema), async (req, res) => {
         code:"L3",
       });
     }
-    console.log("hi")
-
+    if (userInfo.questionLoaded){
+      logger.info(success_codes.S2, userInfo.questionLoaded);
+      return res.json({
+        code: "S2",
+        question: userInfo.questionLoaded,
+      });
+    }
     const easyquestions = await question.find({
       domain: domain,
       difficulty: "Easy",
@@ -87,6 +86,8 @@ router.post("/", validator.body(startSchema), async (req, res) => {
       obj["question"] = selected[i].question;
       final.push(obj);
     }
+    userInfo.questionLoaded = final
+    userInfo.save()
 
     logger.info(success_codes.S2, final);
     return res.json({

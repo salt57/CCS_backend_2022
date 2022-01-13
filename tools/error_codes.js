@@ -9,7 +9,8 @@ const logical_errors = {
   L2: "Domain already attempted",
   L3: "Time over",
   L4: "Test not started or already submitted",
-  L5: "No such user present"
+  L5: "No such user present",
+  L6: "Domain not attempted yet"
 };
 
 const success_codes = {

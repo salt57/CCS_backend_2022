@@ -12,8 +12,7 @@ const UserSchema = new mongoose.Schema({
       enum: ["Tech", "Design", "Management"],
     },
   ],
-  techAttempted: 
-  [
+  techAttempted: [
     {
       quesId: {
         type: Number,
@@ -25,8 +24,7 @@ const UserSchema = new mongoose.Schema({
       },
     },
   ],
-  managementAttempted: 
-  [
+  managementAttempted: [
     {
       quesId: {
         type: Number,
@@ -38,8 +36,7 @@ const UserSchema = new mongoose.Schema({
       },
     },
   ],
-  designAttempted: 
-  [
+  designAttempted: [
     {
       quesId: {
         type: Number,
@@ -56,7 +53,33 @@ const UserSchema = new mongoose.Schema({
   },
   endTime: {
     type: Date,
-  }
+  },
+  questionLoaded: [
+      {
+        quesId: {
+          type: Number,
+          required: true,
+          unique: true,
+        },
+        question: {
+          text: {
+            type: String,
+            required: true,
+          },
+          img: [
+            {
+              type: String,
+            },
+          ],
+          links: [
+            {
+              type: String,
+            },
+          ],
+        },
+      },
+    ],
+
 });
 const User = mongoose.model('user', UserSchema);
 module.exports = User;

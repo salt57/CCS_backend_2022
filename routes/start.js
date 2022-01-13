@@ -41,6 +41,7 @@ router.post("/", validator.body(startSchema), async (req, res) => {
     userInfo.domainsAttempted.push(domain);
     userInfo.startTime = start;
     userInfo.endTime = end;
+    userInfo.questionLoaded = null
     userInfo.save();
   }
 
