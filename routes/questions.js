@@ -46,7 +46,8 @@ router.post("/", validator.body(startSchema), async (req, res) => {
       });
     }
     if (userInfo.questionLoaded){
-      logger.info(success_codes.S2, userInfo.questionLoaded);
+      const questionId = userInfo.questionLoaded.map((ques) => ques.quesId);
+      logger.info(success_codes.S2, questionId);
       return res.json({
         code: "S2",
         question: userInfo.questionLoaded,
@@ -88,8 +89,8 @@ router.post("/", validator.body(startSchema), async (req, res) => {
     }
     userInfo.questionLoaded = final
     userInfo.save()
-
-    logger.info(success_codes.S2, final);
+    const questionId = userInfo.questionLoaded.map((ques) => ques.quesId);
+    logger.info(success_codes.S2, questionId);
     return res.json({
       code: "S2",
       question: final,
