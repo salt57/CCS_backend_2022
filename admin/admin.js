@@ -5,6 +5,8 @@ const question = require("../models/Question");
 const admin = require("../models/Admin");
 const user = require("../models/User");
 const { logger } = require("../logs/logger");
+const { adminSchema } = require("../utils/validation_schema");
+const validator = require("express-joi-validation").createValidator({});
 // const { loggertracker } = require("../logs/tracker");
 const {
   error_codes,
@@ -69,6 +71,21 @@ router.get("/", async (req, res) => {
       candidateInfo: userInfo,
       questions: quesInfo,
     });
+  } catch (e) {
+    logger.error(error_codes.E0);
+    return res.status(500).json({
+      code: "E0",
+      error: e,
+    });
+  }
+});
+
+router.post("/", validator.body(adminSchema), async (req, res) => {
+  try {
+    const { username, round } = req.body;
+    const userInfo = await findOne({ username: username });
+    userInfo.round = round;
+    userInfo.save();
   } catch (e) {
     logger.error(error_codes.E0);
     return res.status(500).json({
