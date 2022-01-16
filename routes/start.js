@@ -34,7 +34,7 @@ router.post("/", validator.body(startSchema), async (req, res) => {
         designAttempted: [],
         startTime: start,
         endTime: end,
-        round: 1
+        round: 1,
       });
       new_user.save();
       addToSheet({ username: username, email: email, round: 1 });
@@ -49,6 +49,7 @@ router.post("/", validator.body(startSchema), async (req, res) => {
       userInfo.domainsAttempted.push(domain);
       userInfo.startTime = start;
       userInfo.endTime = end;
+      userInfo.questionLoaded = null;
       userInfo.save();
     }
 
