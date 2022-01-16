@@ -4,3 +4,4 @@ logs/combined.log
 logs/error.log
 logs/combinedStartEnd.log
 logs/errorStartEnd.log
+credentials.json

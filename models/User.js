@@ -56,6 +56,12 @@ const UserSchema = new mongoose.Schema({
   },
   endTime: {
     type: Date,
+  },
+  round: {
+    type: Number,
+    required: true,
+    enum: [1,2,3],
+    default: 1
   }
 });
 const User = mongoose.model('user', UserSchema);
