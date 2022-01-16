@@ -58,6 +58,7 @@ router.post("/", validator.body(startSchema), async (req, res) => {
       code: "S4",
     });
   } catch (error) {
+    logger.error(error_codes.E0);
     return res.status(500).json({
       code: "E0",
       message: error,

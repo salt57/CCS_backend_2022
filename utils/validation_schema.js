@@ -17,4 +17,9 @@ const startSchema = Joi.object().keys({
   domain: Joi.string().valid("Tech", "Design", "Management").required(),
 });
 
-module.exports = { authUserSchema, startSchema }
+const adminSchema = Joi.object().keys({
+  username: Joi.string().required(),
+  round: Joi.number().valid(1,2,3).required(),
+})
+
+module.exports = { authUserSchema, startSchema, adminSchema }
